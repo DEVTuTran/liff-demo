@@ -27,19 +27,29 @@ const App = () => {
         console.error("LIFF initialization failed", err);
         setError("Failed to initialize LIFF. Please try again.");
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setOpen(true);
+    }
+  }, [isLoggedIn]);
 
   const handleLogin = () => {
     setLoading(true);
-    liff.login().then(() => {
-      setOpen(true);
-    });
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return;
+    }
+    setOpen(true);
   };
 
   const handleLogout = () => {
     liff.logout();
     setIsLoggedIn(false);
     setProfile(null);
+    setOpen(false);
   };
 
   const handleCancle = () => {
@@ -70,13 +80,10 @@ const App = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if the scroll position is greater than 50px
       setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    // Cleanup event listener on component unmount
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -279,7 +286,7 @@ const App = () => {
         </p>
       </footer>
 
-      {isLoggedIn && open && (
+      {open && (
         <div
           className="relative z-10"
           aria-labelledby="modal-title"
