@@ -11,6 +11,7 @@ const App = () => {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpenChat, setIsOpenChat] = useState(false);
+  const [qrCode, setQrCode] = useState("");
 
   const liffId = import.meta.env.VITE_LIFF_ID;
 
@@ -61,6 +62,9 @@ const App = () => {
   const loadUserProfile = async () => {
     try {
       const profile = await liff.getProfile();
+      const generatedUrl = `https://line.me/ti/p/@${profile.userId}`;
+
+      setQrCode(generatedUrl);
       setProfile(profile);
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -79,6 +83,10 @@ const App = () => {
     };
     setEnvironment(env);
   };
+
+  // const startPayment = () => {
+  //   alert("This is a simulated payment process.");
+  // };
 
   const sendMessage = () => {
     liff
@@ -445,7 +453,14 @@ const App = () => {
                       <p className="text-sm text-gray-500 mt-2">
                         Open your LINE app and use the in-app QR code reader.
                       </p>
-                      <div className="mt-2"></div>
+                      <div className="mt-2">
+                        {qrCode && (
+                          <img
+                            src={`https://api.qrserver.com/v1/create-qr-code/?data=${qrCode}&size=150x150`}
+                            alt="QR Code"
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
