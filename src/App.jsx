@@ -129,9 +129,15 @@ const App = () => {
             平均謝礼額5,500円のインタビュー副業
           </span>
         </div>
-        <button className="px-8 py-3 bg-green-600 text-white font-semibold rounded-full shadow-lg hover:bg-green-700">
+        <a
+          id="cv_header"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-8 py-3 bg-green-600 text-white font-semibold rounded-full shadow-lg hover:bg-green-700"
+          href="https://lin.ee/nO27ZWe"
+        >
           LINEから無料登録
-        </button>
+        </a>
       </header>
 
       {/* Main Content */}
