@@ -29,7 +29,7 @@ const App = () => {
 
   const handleLogin = () => {
     setLoading(true);
-    liff.login(); // This triggers the login process only when the button is clicked
+    liff.login();
   };
 
   const handleLogout = () => {
@@ -76,43 +76,6 @@ const App = () => {
 
   return (
     <div className="app-container">
-      {/* <header className="header">
-        <h1>LINE LIFF Demo</h1>
-      </header>
-
-      <main className="main-content">
-        {error && <p className="error-message">{error}</p>}
-
-        {isLoggedIn ? (
-          <div className="profile-section">
-            <img src={profile.pictureUrl} alt="User profile" className="profile-picture" />
-            <h2>Welcome, {profile.displayName}</h2>
-            <button onClick={handleLogout} className="logout-button">
-              Logout
-            </button>
-          </div>
-        ) : (
-          <div className="login-section">
-            <h2>Welcome to the LINE LIFF Demo</h2>
-            <button onClick={handleLogin} disabled={loading} className="login-button">
-              {loading ? "Logging in..." : "Login with LINE"}
-            </button>
-          </div>
-        )}
-
-        {environment && (
-          <div className="environment-info">
-            <h3>Environment Info:</h3>
-            <ul>
-              <li><strong>OS:</strong> {environment.os}</li>
-              <li><strong>Language:</strong> {environment.language}</li>
-              <li><strong>In LINE Client:</strong> {environment.isInClient ? "Yes" : "No"}</li>
-              <li><strong>LIFF Version:</strong> {environment.version}</li>
-            </ul>
-          </div>
-        )}
-      </main>
-
       {/* Header */}
       <header
         className={`w-full sticky top-0 z-10 p-4 transition-colors duration-300 ${
@@ -309,6 +272,164 @@ const App = () => {
           &copy; {new Date().getFullYear()} Unii Research. All rights reserved.
         </p>
       </footer>
+
+      {isLoggedIn && (
+        <div
+          className="relative z-10"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="fixed inset-0 bg-gray-500/75 transition-opacity"
+            aria-hidden="true"
+          ></div>
+
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+                      <svg
+                        className="size-6 text-red-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                        data-slot="icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                      <h3
+                        className="text-base font-semibold text-gray-900"
+                        id="modal-title"
+                      >
+                        Welcome, {profile?.displayName}
+                      </h3>
+                      <img
+                        src={profile?.pictureUrl}
+                        alt="User profile"
+                        className="profile-picture"
+                      />
+                      {environment && (
+                        <div className="text-sm text-gray-500">
+                          <h3>Environment Info:</h3>
+                          <ul>
+                            <li>
+                              <strong>OS:</strong> {environment.os}
+                            </li>
+                            <li>
+                              <strong>Language:</strong> {environment.language}
+                            </li>
+                            <li>
+                              <strong>In LINE Client:</strong>{" "}
+                              {environment.isInClient ? "Yes" : "No"}
+                            </li>
+                            <li>
+                              <strong>LIFF Version:</strong>{" "}
+                              {environment.version}
+                            </li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                  <button
+                    onClick={handleLogout}
+                    type="button"
+                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                  >
+                    Logout
+                  </button>
+                  <button
+                    type="button"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div
+          className="relative z-10"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="fixed inset-0 bg-gray-500/75 transition-opacity"
+            aria-hidden="true"
+          ></div>
+
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+                      <svg
+                        className="size-6 text-red-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                        data-slot="icon"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                      <h3
+                        className="text-base font-semibold text-gray-900"
+                        id="modal-title"
+                      >
+                        Error
+                      </h3>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">{error}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                  <button
+                    type="button"
+                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                  >
+                    Deactivate
+                  </button>
+                  <button
+                    type="button"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
