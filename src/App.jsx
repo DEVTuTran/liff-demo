@@ -8,6 +8,8 @@ const App = () => {
   const [environment, setEnvironment] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const liffId = import.meta.env.VITE_LIFF_ID;
 
@@ -29,13 +31,19 @@ const App = () => {
 
   const handleLogin = () => {
     setLoading(true);
-    liff.login();
+    liff.login().then(() => {
+      setOpen(true);
+    });
   };
 
   const handleLogout = () => {
     liff.logout();
     setIsLoggedIn(false);
     setProfile(null);
+  };
+
+  const handleCancle = () => {
+    setOpen(false);
   };
 
   const loadUserProfile = async () => {
@@ -59,8 +67,6 @@ const App = () => {
     };
     setEnvironment(env);
   };
-
-  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -273,7 +279,7 @@ const App = () => {
         </p>
       </footer>
 
-      {isLoggedIn && (
+      {isLoggedIn && open && (
         <div
           className="relative z-10"
           aria-labelledby="modal-title"
@@ -352,6 +358,7 @@ const App = () => {
                     Logout
                   </button>
                   <button
+                    onClick={handleCancle}
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                   >
