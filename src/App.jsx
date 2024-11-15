@@ -12,6 +12,7 @@ const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpenChat, setIsOpenChat] = useState(false);
   const [qrCode, setQrCode] = useState("");
+  // const [message, setMessage] = useState("Hello from LIFF!");
 
   const liffId = import.meta.env.VITE_LIFF_ID;
 
@@ -20,7 +21,6 @@ const App = () => {
       .init({ liffId })
       .then(() => {
         setIsLoggedIn(liff.isLoggedIn());
-
         if (liff.isLoggedIn()) {
           loadUserProfile();
           getEnvironmentInfo();
@@ -62,7 +62,7 @@ const App = () => {
   const loadUserProfile = async () => {
     try {
       const profile = await liff.getProfile();
-      const generatedUrl = `https://line.me/ti/p/@${profile.userId}`;
+      const generatedUrl = `https://line.me/ti/p/@${profile?.userId}`;
 
       setQrCode(generatedUrl);
       setProfile(profile);
@@ -84,23 +84,17 @@ const App = () => {
     setEnvironment(env);
   };
 
-  // const startPayment = () => {
-  //   alert("This is a simulated payment process.");
+  // const sendMessage = async () => {
+  //   if (liff.isInClient()) {
+  //     try {
+  //       await liff.sendMessages([{ type: "text", text: message }]);
+  //     } catch (error) {
+  //       console.error("Error sending message:", error);
+  //     }
+  //   } else {
+  //     alert("This feature is only available in the LINE app.");
+  //   }
   // };
-
-  const sendMessage = () => {
-    liff
-      .sendMessages([
-        {
-          type: "text",
-          text: "Hello from your LIFF demo app!",
-        },
-      ])
-      .then(() => {
-        alert("Message sent!");
-      })
-      .catch((err) => console.log("Error sending message:", err));
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -389,7 +383,11 @@ const App = () => {
                     Logout
                   </button>
                   <button
-                    onClick={() => setIsOpenChat(true)}
+                    onClick={() => {
+                      setIsOpenChat(true);
+                      setOpen(false);
+                      return;
+                    }}
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                   >
@@ -409,7 +407,7 @@ const App = () => {
         </div>
       )}
 
-      {!isOpenChat && (
+      {isOpenChat && (
         <div
           className="relative z-10"
           aria-labelledby="modal-title"
@@ -450,10 +448,10 @@ const App = () => {
                       >
                         Scan the QR code to add as a friend on LINE
                       </h3>
-                      <p className="text-sm text-gray-500 mt-2">
+                      <p className="text-sm text-gray-500 mt-1">
                         Open your LINE app and use the in-app QR code reader.
                       </p>
-                      <div className="mt-2">
+                      <div className="mt-4 flex justify-center">
                         {qrCode && (
                           <img
                             src={`https://api.qrserver.com/v1/create-qr-code/?data=${qrCode}&size=150x150`}
@@ -466,7 +464,7 @@ const App = () => {
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
-                    onClick={sendMessage}
+                    onClick={() => setIsOpenChat(false)}
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                   >
